@@ -1,16 +1,14 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Share Event</title>
-</head>
-<body>
-    <h1>Share Event</h1>
+{% extends "schedules/base.html" %}
+
+{% block title %}Share Event{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2 class="mb-4">Share Your Event</h2>
     <form method="post">
         {% csrf_token %}
-        <label for="shared_with">Share with:</label>
-        <input type="text" id="shared_with" name="shared_with" required>
-        <button type="submit">Share</button>
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Share Event</button>
     </form>
-    <a href="{% url 'event_list' %}">Back to Event List</a>
-</body>
-</html>
+</div>
+{% endblock %}

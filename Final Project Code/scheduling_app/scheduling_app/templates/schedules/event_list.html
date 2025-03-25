@@ -1,19 +1,21 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Event List</title>
-</head>
-<body>
-    <h1>My Events</h1>
-    <a href="{% url 'event_create' %}">Create New Event</a>
-    <ul>
+{% extends "schedules/base.html" %}
+
+{% block title %}Your Events{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2 class="mb-4">Your Events</h2>
+    <ul class="list-group">
         {% for event in events %}
-            <li>
-                {{ event.title }} ({{ event.start_time }} - {{ event.end_time }})
-                <a href="{% url 'event_update' event.pk %}">Edit</a>
-                <a href="{% url 'share_event' event.pk %}">Share</a>
+            <li class="list-group-item">
+                {{ event.title }} - {{ event.date }}
+                <a href="{% url 'event_edit' event.id %}" class="btn btn-warning btn-sm">Edit</a>
+                <a href="{% url 'event_delete' event.id %}" class="btn btn-danger btn-sm">Delete</a>
             </li>
+        {% empty %}
+            <p>No events found.</p>
         {% endfor %}
     </ul>
-</body>
-</html>
+    <a href="{% url 'event_create' %}" class="btn btn-success mt-3">Create New Event</a>
+</div>
+{% endblock %}
