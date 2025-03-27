@@ -9,5 +9,6 @@ urlpatterns = [
     path('event/<int:pk>/delete/', views.event_delete, name='event_delete'),
     path('event/<int:pk>/share/', views.share_event, name='share_event'),
     path("register/", register, name="register"),  
-    path('schedule/', views.schedule_view, name='schedule'),  # New URL pattern
+    path('schedule/', views.schedule_view, name='schedule'),
+    path('api/events/', views.get_events, name='get_events'),
 ]

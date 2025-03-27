@@ -8,6 +8,9 @@ from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from .models import Event
+from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
+from .models import Event
 
 @login_required
 def event_list(request):
@@ -40,7 +43,7 @@ def event_update(request, pk):
     return render(request, 'schedules/event_form.html', {'form': form})
 
 @login_required
-def event_edit(request, pk):  # Added event_edit view
+def event_edit(request, pk):
     event = get_object_or_404(Event, pk=pk, user=request.user)
     if request.method == 'POST':
         form = EventForm(request.POST, instance=event)
@@ -81,5 +84,24 @@ def schedule_view(request):
 @login_required
 def event_delete(request, pk):
     event = get_object_or_404(Event, pk=pk, user=request.user)
-    event.delete()  # This deletes the event
+    event.delete()  
     return redirect('event_list')
+
+@login_required
+def schedule_view(request):
+    return render(request, 'schedules/schedule.html')
+
+@login_required
+def get_events(request):
+    """Returns events in JSON format for FullCalendar"""
+    events = Event.objects.filter(user=request.user).values('id', 'name', 'date')
+    
+    event_list = []
+    for event in events:
+        event_list.append({
+            'id': event['id'],
+            'title': event['name'],
+            'start': event['date'].isoformat(), 
+        })
+    
+    return JsonResponse(event_list, safe=False)
